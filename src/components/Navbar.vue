@@ -1,38 +1,57 @@
 <template>
   <header
-    class="flex justify-between items-center p-6 bg-opacity-50 relative z-20"
+    class="flex justify-between items-center p-6 bg-opacity-50 relative z-20 md:border-b border-[rgba(255,255,255,0.1)]"
   >
-    <div class="text-white text-3xl font-bold">Logo</div>
+    <div
+      :class="['text-3xl font-bold', isMenuOpen ? 'hidden md:block' : 'block']"
+    >
+      Logo
+    </div>
     <!-- Mobile Toggle button -->
     <div class="md:hidden z-30">
-      <button type="button" class="block focus:outline-none" @click="isMenuOpen = !isMenuOpen">
-        <span v-if="isMenuOpen" class="text-5xl">
+      <button
+        type="button"
+        class="block focus:outline-none absolute right-0 top-0 mt-4 mr-4 transition duration-500 ease-linear"
+        @click="isMenuOpen = !isMenuOpen"
+      >
+        <span v-if="isMenuOpen" class="text-base">
           <img
             src="https://img.icons8.com/ios-filled/100/ffffff/delete-sign.png"
             alt="close"
-            width="50"
-            height="50"
+            width="30"
+            height="30"
           />
         </span>
-        <span v-else class="text-5xl">
+        <span v-else class="text-base">
           <img
             src="https://img.icons8.com/ios-filled/100/ffffff/menu--v6.png"
             alt="menu"
-            width="50"
-            height="50"
+            width="30"
+            height="30"
           />
         </span>
       </button>
     </div>
     <!-- Navbar Link -->
-    <nav :class="isMenuOpen ? 'block' : 'hidden'" class="fixed inset-0 z-20 flex flex-col items-center justify-center bg-secondary bg-opacity-50 md:bg-transparent md:static md:flex-row md:space-x-5">
+    <nav
+      :class="[
+        'fixed inset-0 z-20 flex flex-col items-center justify-center bg-opacity-90 md:static md:flex-row md:space-x-5 pt-6 transition-all duration-1000 ease-in-out',
+        isMenuOpen
+          ? 'translate-y-0 opacity-100 pointer-events-auto'
+          : '-translate-y-full opacity-0 pointer-events-none md:translate-y-0 md:opacity-100 md:pointer-events-auto',
+      ]"
+    >
       <ul
-        class="flex flex-col items-center space-y-5 md:flex-row md:space-x-5 md:space-y-0"
+        class="flex flex-col w-full items-start space-y-10 md:flex-row md:space-x-5 md:space-y-0"
       >
-        <li v-for="menuitem in Menu" :key="menuitem.name">
+        <li
+          v-for="menuitem in Menu"
+          :key="menuitem.name"
+          class="w-full md:border-none border-b border-[rgba(255,255,255,0.1)]"
+        >
           <a
             :href="menuitem.link"
-            class="block transition duration-300 hover:text-primary ease-linear text-2xl md:text-lg"
+            class="menu-slide w-full text-left block transition duration-300 hover:text-primary ease-linear text-base md:text-base md:border-none py-2 px-4"
             @click="scrollToSection(menuitem.link)"
           >
             {{ menuitem.name }}
@@ -64,4 +83,14 @@ const scrollToSection = (section) => {
   }
 };
 </script>
-<style scoped></style>
+<style scoped>
+.menu-slide {
+  display: inline-block;
+  transform: translateY(-10px);
+  transition: transform 0.3s ease;
+}
+
+.menu-slide:hover {
+  transform: translateY(0);
+}
+</style>
